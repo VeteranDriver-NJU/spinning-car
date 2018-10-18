@@ -53,7 +53,13 @@ public:
         return grayscale(img);
     }
 
-//    Mat get_gaussian_blur_img(){}
+    Mat get_sobel_x_img(){
+        return sobel_x_thresh(img);
+    }
+
+    Mat get_mag_thresh_img(){
+        return grad_thresh(img);
+    }
 };
 
 #endif //DUMB_CAR_CAMERA_H

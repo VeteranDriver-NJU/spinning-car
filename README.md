@@ -1,3 +1,1 @@
-# spinning car
-
-Embedded System Car Race.
+# Embedded System Homework

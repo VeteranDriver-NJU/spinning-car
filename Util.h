@@ -19,15 +19,71 @@ Mat grayscale(Mat &img){
     return gray;
 }
 
-//Mat gaussian_blur(Mat &img, int kernel_size){
-//    Mat gaussion;
-//    //TODO
-//}
+Mat gaussian_blur(Mat &img, Size kernel_size){
+    Mat gaussion;
+    GaussianBlur(img, gaussion, kernel_size, 0);
+    return gaussion;
+}
 
-//Mat x_thresh(Mat &img, int sobel_kernel = 3, int thresh_x = 0, int thresh_y = 255){
-//    Mat gray = grayscale(img);
-//    Mat grad;
-//    //TODO
-//}
+Mat sobel_x_thresh(Mat &img, int sobel_size = 3, int thresh_x = 0, int thresh_y = 255){
+    Mat gaussian = gaussian_blur(img,Size(5,5));
+    Mat gray = grayscale(gaussian);
+
+    //Take only Sobel x
+    Mat sobel_x, abs_sobel_x;
+    Sobel(gray, sobel_x, CV_64F, 1, 0, sobel_size);
+    //Calculate the absolute value of the x derivative
+    convertScaleAbs(sobel_x, abs_sobel_x);
+    Mat sobel_x_binary = abs_sobel_x.clone();
+
+    for(int k = 0; k<abs_sobel_x.rows;k++){
+        for(int kk = 0; k<abs_sobel_x.cols;k++){
+            //Convert the absolute value image to 8-bit
+            int n = abs_sobel_x.at<ushort >(k, kk);
+            abs_sobel_x.at<uchar >(k, kk) = (uchar)n;
+
+            //Create binary image using thresholding
+            sobel_x_binary.at<ushort >(k,kk) = 0;
+            if(n < thresh_y || n > thresh_x){
+                sobel_x_binary.at<uchar >(k, kk) = 1;
+            }
+        }
+    }
+    return sobel_x_binary;
+}
+
+Mat grad_thresh(Mat &img, int sobel_size = 3, int thresh_x = 0, int thresh_y = 255){
+    Mat gaussian = gaussian_blur(img,Size(5,5));
+    Mat gray = grayscale(gaussian);
+
+    //Take both Sobel x and y gradients
+    Mat sobel_x;
+    Sobel(gray, sobel_x, CV_64F, 1, 0, sobel_size);
+    Mat sobel_y;
+    Sobel(gray, sobel_y, CV_64F, 0, 1, sobel_size);
+    Mat grad = sobel_x.clone();
+
+    //Calculate the gradient magnitude
+    convertScaleAbs( sobel_x, sobel_x );
+    convertScaleAbs( sobel_y, sobel_y );
+    addWeighted( sobel_x, 0.5, sobel_y, 0.5, 0, grad );
+    Mat grad_binary = grad.clone();
+
+    for(int k = 0; k<grad.rows;k++){
+        for(int kk = 0; k<grad.cols;k++){
+            //Rescale to 8 bit
+            int n = grad.at<ushort >(k, kk);
+            grad.at<uchar >(k, kk) = (uchar)n;
+
+            //Create binary image using thresholding
+            grad_binary.at<ushort >(k,kk) = 0;
+            if(n < thresh_y || n > thresh_x){
+                grad_binary.at<uchar >(k, kk) = 1;
+            }
+        }
+    }
+    return grad_binary;
+
+}
 
 #endif //DUMB_CAR_UTIL_H

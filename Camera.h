@@ -2,8 +2,8 @@
 // Created by aquafits on 18-10-18.
 //
 
-#ifndef DUMB_CAR_CAMERA_H
-#define DUMB_CAR_CAMERA_H
+#ifndef SPINNING_CAR_CAMERA_H
+#define SPINNING_CAR_CAMERA_H
 
 #include <string>
 #include <iostream>
@@ -40,6 +40,11 @@ public:
         capture.release();
     }
 
+    void relocate(string path){
+        img = imread(path);
+        imshow("relocate file", img);
+    }
+
     void update(){
         capture >> img;
     }
@@ -62,4 +67,4 @@ public:
     }
 };
 
-#endif //DUMB_CAR_CAMERA_H
+#endif //SPINNING_CAR_CAMERA_H

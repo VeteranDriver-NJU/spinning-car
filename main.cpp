@@ -7,7 +7,8 @@ int main() {
 
     Mat _img;
     while (true){
-        camera.update();
+//        camera.update();
+        camera.relocate("/home/aquafits/Documents/Repos/spinning-car/test_files/2.jpg");
 
         _img = camera.get_img();
         imshow("original", _img);

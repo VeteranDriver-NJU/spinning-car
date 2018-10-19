@@ -2,8 +2,8 @@
 // Created by aquafits on 18-10-18.
 //
 
-#ifndef DUMB_CAR_UTIL_H
-#define DUMB_CAR_UTIL_H
+#ifndef SPINNING_CAR_UTIL_H
+#define SPINNING_CAR_UTIL_H
 
 #include <iostream>
 
@@ -86,4 +86,4 @@ Mat grad_thresh(Mat &img, int sobel_size = 3, int thresh_x = 0, int thresh_y = 2
 
 }
 
-#endif //DUMB_CAR_UTIL_H
+#endif //SPINNING_CAR_UTIL_H

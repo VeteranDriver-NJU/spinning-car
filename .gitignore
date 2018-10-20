@@ -157,3 +157,5 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+test_version0.cpp
+test_version0.cpp

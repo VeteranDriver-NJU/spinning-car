@@ -25,7 +25,7 @@ Mat gaussian_blur(Mat &img, Size kernel_size){
     return gaussion;
 }
 
-Mat sobel_x_thresh(Mat &img, int sobel_size = 3, int thresh_x = 0, int thresh_y = 12){
+Mat sobel_x_thresh(Mat &img, int sobel_size = 3){
     Mat gaussian = gaussian_blur(img,Size(5,5));
     Mat gray = grayscale(gaussian);
 
@@ -44,10 +44,9 @@ Mat sobel_x_thresh(Mat &img, int sobel_size = 3, int thresh_x = 0, int thresh_y 
         }
     }
     return sobel_x_binary;
-//    return abs_sobel_x;
 }
 
-Mat grad_thresh(Mat &img, int sobel_size = 3, int thresh_x = 0, int thresh_y = 255){
+Mat grad_thresh(Mat &img, int sobel_size = 3){
     Mat gaussian = gaussian_blur(img,Size(5,5));
     Mat gray = grayscale(gaussian);
 
@@ -69,12 +68,6 @@ Mat grad_thresh(Mat &img, int sobel_size = 3, int thresh_x = 0, int thresh_y = 2
             //Rescale to 8 bit
             int n = grad.at<uchar >(k, kk);
             grad.at<uchar >(k, kk) = (uchar)n;
-
-            //Create binary image using thresholding
-            grad_binary.at<uchar >(k,kk) = 0;
-            if(n < thresh_y || n > thresh_x){
-                grad_binary.at<uchar >(k, kk) = 1;
-            }
         }
     }
     return grad_binary;
